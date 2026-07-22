@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: easycheats-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: ADMIN_PASSWORD
+        value: EasyCheats@2024
+      - key: NODE_ENV
+        value: production

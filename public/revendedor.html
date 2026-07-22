@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>EASY CHEATS — Revendedores</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0c;--bg2:#111114;--bg3:#18181d;--border:#2a2a30;
+  --red:#c90f0f;--green:#22c55e;--yellow:#f59e0b;--purple:#bb1818;
+  --text:#ececec;--dim:#888;--r:10px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+
+/* LOGIN */
+#login-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--purple);border-radius:var(--r);padding:40px 36px;width:360px;box-shadow:0 0 40px rgba(168,85,247,.12)}
+.login-box h1{font-size:1.5rem;text-align:center;margin-bottom:4px}
+.login-box h1 span{color:var(--red)}
+.login-box .sub{text-align:center;color:var(--purple);font-size:.85rem;margin-bottom:24px}
+
+/* HEADER */
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);position:relative;z-index:1}
+.logo{font-size:1.2rem;font-weight:700}.logo span{color:var(--red)}
+#user-info{font-size:.82rem;color:var(--dim)}
+#user-info strong{color:var(--purple)}
+
+/* MAIN */
+main{max-width:900px;margin:0 auto;padding:24px 20px;position:relative;z-index:1}
+
+/* INFO CARDS */
+.info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:center}
+.info-card .num{font-size:1.8rem;font-weight:700}
+.info-card .lbl{font-size:.75rem;color:var(--dim);margin-top:5px}
+.c-purple{color:var(--purple)}.c-green{color:var(--green)}.c-yellow{color:var(--yellow)}.c-red{color:var(--red)}
+
+/* PROGRESS */
+.progress-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:20px}
+.progress-wrap h3{font-size:.9rem;margin-bottom:12px;color:var(--dim)}
+.progress-bar{height:10px;border-radius:6px;background:var(--bg3);overflow:hidden}
+.progress-fill{height:100%;border-radius:6px;background:var(--green);transition:width .4s}
+.progress-fill.warn{background:var(--yellow)}
+.progress-fill.danger{background:var(--red)}
+.progress-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:.78rem;color:var(--dim)}
+
+/* PANEL */
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px}
+.panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.panel-hdr h2{font-size:.95rem}
+.panel-body{padding:18px}
+
+/* FORM */
+.form-row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.fg{display:flex;flex-direction:column;gap:5px;flex:1;min-width:130px}
+.fg label{font-size:.8rem;color:var(--dim)}
+input[type=text],input[type=password],input[type=date],input[type=url]{background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:9px 12px;font-size:.9rem;outline:none;width:100%;transition:border-color .2s;font-family:inherit}
+input:focus{border-color:var(--purple)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:7px;font-size:.86rem;font-weight:600;border:none;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.btn:hover{opacity:.85}
+.btn-purple{background:var(--purple);color:#fff}
+.btn-dark{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-yellow{background:#78350f;color:#fde68a;border:1px solid #78350f}
+.btn-red{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;color:var(--dim);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text)}
+.btn-sm{padding:5px 10px;font-size:.78rem}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+thead th{background:var(--bg3);color:var(--dim);font-weight:600;text-align:left;padding:9px 13px;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em}
+tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+tbody td{padding:10px 13px;vertical-align:middle}
+.key-mono{font-family:'Courier New',monospace;font-size:.81rem;letter-spacing:.03em}
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:.72rem;font-weight:600;text-transform:uppercase}
+.badge-active{background:#14532d;color:#86efac}
+.badge-paused{background:#713f12;color:#fde68a}
+.badge-revoked{background:#450a0a;color:#fca5a5}
+.badge-expired{background:#1e1b4b;color:#a5b4fc}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--purple);border-radius:var(--r);padding:26px;width:420px;max-width:95vw}
+.modal h3{font-size:1rem;margin-bottom:16px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.key-display{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:14px;text-align:center;font-family:monospace;font-size:1.1rem;letter-spacing:.1em;color:var(--green);margin-bottom:14px;word-break:break-all}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--red);padding:11px 18px;border-radius:8px;font-size:.86rem;opacity:0;pointer-events:none;transition:opacity .3s;z-index:1000}
+#toast.show{opacity:1;pointer-events:auto}
+#toast.success{border-left-color:var(--green)}
+
+/* EXPIRY WARNING */
+.expiry-warn{background:#78350f22;border:1px solid var(--yellow);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.85rem;color:var(--yellow)}
+.limit-warn{background:#45000022;border:1px solid var(--red);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.85rem;color:#fca5a5}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<canvas id="particles-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
+
+<!-- LOGIN -->
+<div id="login-overlay">
+  <div class="login-box">
+    <h1><span>EASY</span> <span style="color:#fff">CHEATS</span></h1>
+    <p class="sub">Painel do Revendedores</p>
+    <div class="fg" style="margin-bottom:12px">
+      <label>URL da API</label>
+      <input type="url" id="login-api-url" placeholder="https://easycheats-api-3.onrender.com"/>
+    </div>
+    <div class="fg" style="margin-bottom:12px">
+      <label>Usuário</label>
+      <input type="text" id="login-user" placeholder="Seu usuário"/>
+    </div>
+    <div class="fg" style="margin-bottom:20px">
+      <label>Senha</label>
+      <input type="password" id="login-pass" placeholder="Sua senha"/>
+    </div>
+    <button class="btn btn-purple" style="width:100%;justify-content:center" onclick="doLogin()">Entrar</button>
+    <p id="login-err" style="color:#f87171;font-size:.82rem;text-align:center;margin-top:10px;display:none"></p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo"><span>EASY</span> <span style="color:#fff">CHEATS</span> — Revendedores</div>
+  <div id="user-info">Carregando...</div>
+</header>
+
+<main>
+
+  <!-- Alertas -->
+  <div id="alerts"></div>
+
+  <!-- Info cards -->
+  <div class="info-cards">
+    <div class="info-card"><div class="num c-purple" id="ic-used">—</div><div class="lbl">Keys Geradas</div></div>
+    <div class="info-card"><div class="num c-green"  id="ic-left">—</div><div class="lbl">Keys Restantes</div></div>
+    <div class="info-card"><div class="num c-yellow" id="ic-limit">—</div><div class="lbl">Limite Total</div></div>
+  </div>
+
+  <!-- Barra de progresso -->
+  <div class="progress-wrap">
+    <h3>Uso de Keys</h3>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="progress-labels"><span id="prog-left"></span><span id="prog-pct"></span></div>
+  </div>
+
+  <!-- Adicionar key -->
+  <div class="panel">
+    <div class="panel-hdr"><h2>Adicionar Key para Cliente</h2></div>
+    <div class="panel-body">
+      <div class="form-row">
+        <div class="fg"><label>Key (obrigatório)</label><input type="text" id="k-value" placeholder="XX-XXXX-XXXX-XXXX-XXXX"/></div>
+        <div class="fg"><label>Label (cliente)</label><input type="text" id="k-label" placeholder="Nome do cliente"/></div>
+        <div class="fg" style="max-width:170px"><label>Expira em</label><input type="date" id="k-expires"/></div>
+        <button class="btn btn-purple" onclick="addKey()">+ Adicionar Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gerar keys em lote -->
+  <div class="panel">
+    <div class="panel-hdr"><h2>🎲 Gerar Keys em Lote</h2></div>
+    <div class="panel-body">
+      <div class="form-row">
+        <div class="fg" style="max-width:120px"><label>Quantidade</label><input type="number" id="bulk-qty" value="1" min="1" max="100" style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:9px 12px;font-size:.9rem;outline:none;width:100%"/></div>
+        <div class="fg"><label>Prefixo (opcional)</label><input type="text" id="bulk-prefix" placeholder="ex: VIP- ou CLIENTE-"/></div>
+        <div class="fg"><label>Label (cliente)</label><input type="text" id="bulk-label" placeholder="Descrição opcional"/></div>
+        <div class="fg" style="max-width:170px"><label>Expira em</label><input type="date" id="bulk-expires"/></div>
+        <button class="btn btn-purple" onclick="generateBulkKeys()">🎲 Gerar</button>
+      </div>
+      <div id="bulk-result" style="margin-top:14px;display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:.85rem;color:var(--dim)" id="bulk-count-label"></span>
+          <button class="btn btn-ghost btn-sm" onclick="copyAllKeys()">📋 Copiar Todas</button>
+        </div>
+        <textarea id="bulk-keys-output" readonly style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:var(--green);padding:12px;font-family:monospace;font-size:.82rem;min-height:100px;resize:vertical;outline:none"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de keys -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <h2>Minhas Keys</h2>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-red btn-sm" onclick="revokeSelected()" id="btn-revoke-selected" style="display:none">🚫 Revogar Selecionadas</button>
+        <button class="btn btn-green btn-sm" onclick="unpauseAllKeys()">▶ Despausar Todas</button>
+        <button class="btn btn-yellow btn-sm" onclick="pauseAllKeys()">⏸ Pausar Todas</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadMyKeys()">↺</button>
+      </div>
+    </div>
+    <div class="panel-body" style="padding:0">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><input type="checkbox" id="r-chk-all" onclick="toggleSelectAllR(this)" title="Selecionar todas"/></th><th>Key</th><th>Label</th><th>Status</th><th>Device</th><th>Expira</th><th>Ações</th></tr></thead>
+          <tbody id="my-keys-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL: key adicionada -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal">
+    <h3>✅ Key Adicionada!</h3>
+    <div class="key-display" id="success-key"></div>
+    <p style="font-size:.82rem;color:var(--dim);margin-bottom:4px">Copie e envie para o cliente.</p>
+    <div class="modal-actions">
+      <button class="btn btn-dark" onclick="closeModal('success-modal')">Fechar</button>
+      <button class="btn btn-purple" onclick="copyKey()">📋 Copiar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+let API_URL  = localStorage.getItem('ec_r_api')  || 'https://easycheats-api-3.onrender.com';
+let R_USER   = localStorage.getItem('ec_r_user') || '';
+let R_PASS   = localStorage.getItem('ec_r_pass') || '';
+let meInfo   = null;
+let myKeys   = [];
+
+// ── Login ────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const url  = document.getElementById('login-api-url').value.trim().replace(/\/$/,'');
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value.trim();
+  const err  = document.getElementById('login-err');
+
+  if (!url || !user || !pass) { err.textContent='Preencha todos os campos.'; err.style.display='block'; return; }
+
+  try {
+    const r = await fetch(`${url}/reseller/me`, {
+      headers: { 'x-reseller-user': user, 'x-reseller-pass': pass }
+    });
+    const data = await r.json();
+
+    if (r.status === 401 || data.status === 'error') {
+      err.textContent = data.reason === 'reseller_expired' ? 'Sua conta expirou.' : 'Usuário ou senha incorretos.';
+      err.style.display = 'block';
+      return;
+    }
+
+    API_URL = url; R_USER = user; R_PASS = pass;
+    localStorage.setItem('ec_r_api',  API_URL);
+    localStorage.setItem('ec_r_user', R_USER);
+    localStorage.setItem('ec_r_pass', R_PASS);
+
+    document.getElementById('login-overlay').style.display = 'none';
+    meInfo = data;
+    updateHeader();
+    updateInfo();
+    await loadMyKeys();
+    checkAlerts();
+  } catch(e) { err.textContent='Não foi possível conectar.'; err.style.display='block'; }
+}
+
+document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+
+// Preenche campos salvos
+if (API_URL) document.getElementById('login-api-url').value = API_URL;
+if (R_USER)  document.getElementById('login-user').value    = R_USER;
+if (R_PASS)  document.getElementById('login-pass').value    = R_PASS;
+
+// Auto-login se já tem credenciais salvas
+if (API_URL && R_USER && R_PASS) { doLogin(); }
+
+// ── Info ──────────────────────────────────────────────────────────────────────
+function updateHeader() {
+  document.getElementById('user-info').innerHTML = `Logado como <strong>${R_USER}</strong>`;
+}
+
+function updateInfo() {
+  if (!meInfo) return;
+  document.getElementById('ic-used').textContent  = meInfo.keys_used;
+  document.getElementById('ic-left').textContent  = meInfo.keys_left;
+  document.getElementById('ic-limit').textContent = meInfo.key_limit;
+
+  const pct = meInfo.key_limit > 0 ? Math.round((meInfo.keys_used / meInfo.key_limit) * 100) : 0;
+  const fill = document.getElementById('prog-fill');
+  fill.style.width = pct + '%';
+  fill.className = 'progress-fill' + (pct >= 90 ? ' danger' : pct >= 70 ? ' warn' : '');
+  document.getElementById('prog-left').textContent = `${meInfo.keys_used} usadas`;
+  document.getElementById('prog-pct').textContent  = `${pct}%`;
+}
+
+function checkAlerts() {
+  const box = document.getElementById('alerts');
+  box.innerHTML = '';
+  if (!meInfo) return;
+
+  if (meInfo.keys_left <= 2)
+    box.innerHTML += `<div class="limit-warn">⚠️ Você tem apenas <strong>${meInfo.keys_left}</strong> key(s) restante(s). Contate o administrador para aumentar seu limite.</div>`;
+
+  if (meInfo.expires_at) {
+    const days = Math.ceil((new Date(meInfo.expires_at) - new Date()) / 86400000);
+    if (days <= 7 && days > 0)
+      box.innerHTML += `<div class="expiry-warn">⏰ Sua conta expira em <strong>${days}</strong> dia(s) (${fmtDate(meInfo.expires_at)}).</div>`;
+    if (days <= 0)
+      box.innerHTML += `<div class="limit-warn">🚫 Sua conta expirou em ${fmtDate(meInfo.expires_at)}. Contate o administrador.</div>`;
+  }
+}
+
+// ── Keys ─────────────────────────────────────────────────────────────────────
+async function loadMyKeys() {
+  try {
+    const r = await rFetch('/reseller/keys');
+    myKeys = r.keys || [];
+    renderMyKeys();
+    // Atualiza info
+    const me = await rFetch('/reseller/me');
+    meInfo = me;
+    updateInfo();
+    checkAlerts();
+  } catch(e) { toast('Erro ao carregar keys.'); }
+}
+
+function renderMyKeys() {
+  const tbody = document.getElementById('my-keys-tbody');
+  if (!myKeys.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--dim)">Nenhuma key gerada ainda.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = myKeys.map(k => `
+    <tr>
+      <td><input type="checkbox" class="r-chk-key" value="${k.id}" onchange="updateRevokeBtn()"/></td>
+      <td><span class="key-mono">${k.key_value}</span> <button class="btn btn-ghost btn-sm" onclick="copyText('${k.key_value}')">📋</button></td>
+      <td>${k.label || '<span style="color:var(--dim)">—</span>'}</td>
+      <td>${badge(k.status)}</td>
+      <td style="font-size:.78rem;color:var(--dim)">
+        ${k.device_id
+          ? `<span title="${k.device_id}">${k.device_id.substring(0,10)}…</span>
+             <button class="btn btn-yellow btn-sm" onclick="resetDevice(${k.id})" title="Resetar device — use quando cliente formatar o celular">↺ Reset</button>`
+          : '<span style="color:var(--green)">Livre</span>'}
+      </td>
+      <td style="font-size:.82rem">${k.expires_at ? fmtDate(k.expires_at) : '<span style="color:var(--dim)">Sem limite</span>'}</td>
+      <td>
+        <div class="row-actions">
+          ${k.status !== 'active'  ? `<button class="btn btn-green btn-sm" onclick="setKeyStatus(${k.id},'active')">✓ Ativar</button>` : ''}
+          ${k.status !== 'paused'  ? `<button class="btn btn-yellow btn-sm" onclick="pauseKey(${k.id})">⏸ Pausar</button>` : ''}
+          ${k.status !== 'revoked' ? `<button class="btn btn-dark  btn-sm" onclick="revokeKey(${k.id},'${k.key_value}')">🚫 Revogar</button>` : ''}
+          <button class="btn btn-yellow btn-sm" onclick="resetDevice(${k.id})" title="Resetar device — use quando cliente formatar o celular">↺ Reset</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function addKey() {
+  const kv = document.getElementById('k-value').value.trim();
+  const lb = document.getElementById('k-label').value.trim();
+  const ex = document.getElementById('k-expires').value || null;
+
+  if (!kv) { toast('Informe o valor da key.'); return; }
+
+  try {
+    const r = await rFetch('/reseller/keys/add', 'POST', { key_value: kv, label: lb, expires_at: ex });
+    document.getElementById('k-value').value = '';
+    document.getElementById('k-label').value = '';
+    document.getElementById('k-expires').value = '';
+    document.getElementById('success-key').textContent = r.key.key_value;
+    openModal('success-modal');
+    await loadMyKeys();
+    toast('Key adicionada!', true);
+  } catch(e) {
+    if (e.message === 'key_limit_reached') toast('Limite de keys atingido. Contate o admin.');
+    else toast('Erro: ' + e.message);
+  }
+}
+
+function toggleSelectAllR(chk) {
+  document.querySelectorAll('.r-chk-key').forEach(c => c.checked = chk.checked);
+  updateRevokeBtn();
+}
+
+function updateRevokeBtn() {
+  const selected = document.querySelectorAll('.r-chk-key:checked').length;
+  const btn = document.getElementById('btn-revoke-selected');
+  btn.style.display = selected > 0 ? '' : 'none';
+  btn.textContent = `🚫 Revogar Selecionadas (${selected})`;
+}
+
+async function revokeSelected() {
+  const ids = [...document.querySelectorAll('.r-chk-key:checked')].map(c => parseInt(c.value));
+  if (!ids.length) return;
+  if (!confirm(`Revogar ${ids.length} key(s) selecionada(s)?`)) return;
+  try {
+    await Promise.all(ids.map(id => rFetch(`/reseller/keys/${id}/revoke`, 'PATCH')));
+    await loadMyKeys();
+    toast(`${ids.length} key(s) revogada(s).`, true);
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function generateBulkKeys() {
+  const qty    = parseInt(document.getElementById('bulk-qty').value) || 1;
+  const prefix = document.getElementById('bulk-prefix').value.trim();
+  const label  = document.getElementById('bulk-label').value.trim();
+  const ex     = document.getElementById('bulk-expires').value || null;
+
+  if (qty < 1 || qty > 100) { toast('Quantidade deve ser entre 1 e 100.'); return; }
+
+  const generated = [];
+  const errors = [];
+
+  for (let i = 0; i < qty; i++) {
+    const key = prefix + generateRandomKey();
+    try {
+      await rFetch('/reseller/keys/add', 'POST', { key_value: key, label, expires_at: ex });
+      generated.push(key);
+    } catch(e) {
+      if (e.message === 'key_limit_reached') { toast('Limite de keys atingido!'); break; }
+      errors.push(key);
+    }
+  }
+
+  await loadMyKeys();
+
+  const resultBox = document.getElementById('bulk-result');
+  const output    = document.getElementById('bulk-keys-output');
+  const countLbl  = document.getElementById('bulk-count-label');
+
+  if (generated.length) {
+    resultBox.style.display = 'block';
+    output.value = generated.join('\n');
+    countLbl.textContent = `${generated.length} key(s) gerada(s)${errors.length ? ` — ${errors.length} falha(s)` : ''}`;
+    toast(`${generated.length} key(s) gerada(s)!`, true);
+  } else {
+    toast('Nenhuma key gerada.');
+  }
+}
+
+function generateRandomKey() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const seg = (n) => Array.from({ length: n }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  return `${seg(2)}-${seg(4)}-${seg(4)}-${seg(4)}-${seg(4)}`;
+}
+
+function copyAllKeys() {
+  const txt = document.getElementById('bulk-keys-output').value;
+  if (!txt) return;
+  navigator.clipboard.writeText(txt).then(() => toast('Todas as keys copiadas!', true));
+}
+
+async function pauseKey(id) {
+  try { await rFetch(`/reseller/keys/${id}/pause`, 'PATCH'); await loadMyKeys(); toast('Key pausada.', true); }
+  catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function unpauseAllKeys() {
+  if (!confirm('Ativar TODAS as suas keys pausadas?')) return;
+  const pausadas = myKeys.filter(k => k.status === 'paused');
+  if (!pausadas.length) { toast('Nenhuma key pausada.'); return; }
+  try {
+    await Promise.all(pausadas.map(k => rFetch(`/reseller/keys/${k.id}/activate`, 'PATCH')));
+    await loadMyKeys();
+    toast(`${pausadas.length} key(s) ativada(s).`, true);
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function pauseAllKeys() {
+  if (!confirm('Pausar TODAS as suas keys ativas?')) return;
+  const ativas = myKeys.filter(k => k.status === 'active');
+  if (!ativas.length) { toast('Nenhuma key ativa para pausar.'); return; }
+  try {
+    await Promise.all(ativas.map(k => rFetch(`/reseller/keys/${k.id}/pause`, 'PATCH')));
+    await loadMyKeys();
+    toast(`${ativas.length} key(s) pausada(s).`, true);
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function resetDevice(id) {
+  try { await rFetch(`/reseller/keys/${id}/reset-device`, 'PATCH'); await loadMyKeys(); toast('Device resetado.', true); }
+  catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function revokeKey(id, kv) {
+  if (!confirm(`Revogar a key ${kv}? O cliente não conseguirá mais usar.`)) return;
+  try { await rFetch(`/reseller/keys/${id}/revoke`, 'PATCH'); await loadMyKeys(); toast('Key revogada.', true); }
+  catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function deleteKey(id, kv) {
+  if (!confirm(`Apagar a key ${kv} permanentemente?`)) return;
+  try {
+    await rFetch(`/reseller/keys/${id}`, 'DELETE');
+    await loadMyKeys();
+    toast('Key apagada.', true);
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function setKeyStatus(id, status) {
+  try {
+    // Revendedor não tem rota de patch status — usa revogar ou ativar via toggle
+    if (status === 'active') {
+      // Usa a rota de revoke ao contrário — precisamos de uma rota de ativar
+      await rFetch(`/reseller/keys/${id}/activate`, 'PATCH');
+    }
+    await loadMyKeys();
+    toast('Status atualizado.', true);
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+function copyKey() {
+  copyText(document.getElementById('success-key').textContent);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+async function rFetch(path, method='GET', body=null) {
+  if (!API_URL) { toast('URL da API não configurada. Faça login novamente.'); throw new Error('no_api_url'); }
+  const opts = {
+    method,
+    headers: { 'Content-Type':'application/json', 'x-reseller-user': R_USER, 'x-reseller-pass': R_PASS }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(API_URL + path, opts);
+  const ct = r.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) {
+    throw new Error(`Resposta inválida da API (HTTP ${r.status}). Verifique a URL.`);
+  }
+  const data = await r.json();
+  if (!r.ok || data.status === 'error') throw new Error(data.reason || `HTTP ${r.status}`);
+  return data;
+}
+
+function badge(s) {
+  const m = {
+    active:  '<span class="badge badge-active">Ativa</span>',
+    paused:  '<span class="badge badge-paused">Pausada</span>',
+    revoked: '<span class="badge badge-revoked">Revogada</span>',
+    expired: '<span class="badge badge-expired">Expirada</span>'
+  };
+  return m[s] || `<span class="badge">${s}</span>`;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+function copyText(t) { navigator.clipboard.writeText(t).then(() => toast('Copiado!', true)); }
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); });
+});
+
+let toastTimer;
+function toast(msg, ok=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (ok ? ' success' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className='', 3500);
+}
+</script>
+
+<script>
+// ── Particles ────────────────────────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('particles-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, particles = [];
+  const COUNT = 90;
+
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+
+  function createParticle(){
+    const isRed = Math.random() < 0.5;
+    return {
+      x: rand(0,W), y: rand(0,H),
+      vx: rand(-0.3,0.3), vy: rand(-0.3,0.3),
+      r: rand(2,5),
+      baseR: rand(2,5),
+      isRed,
+      phase: rand(0, Math.PI*2),
+      speed: rand(0.01,0.03)
+    };
+  }
+
+  for(let i=0;i<COUNT;i++) particles.push(createParticle());
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Linhas
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 150){
+          const alpha = 0.4*(1-dist/150);
+          ctx.beginPath();
+          ctx.strokeStyle = particles[i].isRed
+            ? `rgba(220,30,30,${alpha})`
+            : `rgba(200,200,200,${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Partículas com glow
+    particles.forEach(p => {
+      p.phase += p.speed;
+      p.r = p.baseR + Math.sin(p.phase) * 1.5;
+
+      const r = p.isRed ? 220 : 255;
+      const g = p.isRed ? 30  : 255;
+      const b = p.isRed ? 30  : 255;
+      const alpha = 0.7 + Math.sin(p.phase)*0.3;
+
+      // Glow externo
+      const grd = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+      grd.addColorStop(0, `rgba(${r},${g},${b},${alpha*0.6})`);
+      grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r*4, 0, Math.PI*2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+      // Núcleo brilhante
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = `rgba(${r},${g},${b},0.9)`;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+  }
+
+  function update(){
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x<-10) p.x=W+10; if(p.x>W+10) p.x=-10;
+      if(p.y<-10) p.y=H+10; if(p.y>H+10) p.y=-10;
+    });
+  }
+
+  function loop(){ draw(); update(); requestAnimationFrame(loop); }
+  loop();
+})();
+</script>
+</body>
+</html>

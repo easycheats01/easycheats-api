@@ -1,0 +1,7 @@
+DISPLAY_NAME=EASYCHEATS
+MAIN=server.js
+MEMORY=256
+VERSION=recommended
+START=node server.js
+PORT=80
+PERSISTENT_VOLUMES=/data
