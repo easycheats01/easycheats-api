@@ -1,0 +1,98 @@
+🚀 COMO FAZER PUSH PARA O GITHUB
+
+Você está com erro de permissão. Siga estas etapas:
+
+═══════════════════════════════════════════════════════════════
+
+OPÇÃO 1: Criar Personal Access Token (Mais Rápido)
+═══════════════════════════════════════════════════════════════
+
+1. Acesse: https://github.com/settings/tokens
+
+2. Clique em "Generate new token" → "Generate new token (classic)"
+
+3. Configurações:
+   - Note: "EasyCheats Deploy"
+   - Expiration: 90 days (ou No expiration)
+   - Marque: ✅ repo (todos os checkboxes)
+
+4. Clique em "Generate token"
+
+5. COPIE O TOKEN (você só verá uma vez!)
+   Exemplo: ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+6. No PowerShell, execute:
+
+   git remote set-url origin https://SEU_TOKEN@github.com/easycheats01/easycheats-api.git
+
+   (Substitua SEU_TOKEN pelo token copiado)
+
+7. Depois execute:
+
+   git push -u origin main
+
+═══════════════════════════════════════════════════════════════
+
+OPÇÃO 2: Upload Manual no GitHub (Mais Simples)
+═══════════════════════════════════════════════════════════════
+
+1. Acesse: https://github.com/easycheats01/easycheats-api
+
+2. Clique em "uploading an existing file"
+
+3. Arraste estes arquivos:
+   ✅ server.js
+   ✅ package.json
+   ✅ squarecloud.app
+   ✅ render.yaml
+   
+4. Clique em "Create new file" para criar a pasta public:
+   - Nome: public/painel.html
+   - Cole o conteúdo do arquivo painel.html
+   - Commit
+
+5. Repita para public/revendedor.html
+
+═══════════════════════════════════════════════════════════════
+
+DEPOIS DO UPLOAD - CONECTAR AO RENDER
+═══════════════════════════════════════════════════════════════
+
+1. Volte ao Render: https://dashboard.render.com
+
+2. Clique em "New +" → "Web Service"
+
+3. Clique em "Connect account" → Conecte seu GitHub
+
+4. Selecione o repositório: easycheats-api
+
+5. Configure:
+   - Name: easycheats-api
+   - Build Command: npm install
+   - Start Command: node server.js
+   - Add Environment Variable:
+     * Key: ADMIN_PASSWORD
+     * Value: EasyCheats@2024
+
+6. Clique em "Create Web Service"
+
+7. Aguarde o deploy (2-3 minutos)
+
+8. Copie a URL fornecida (ex: https://easycheats-api.onrender.com)
+
+═══════════════════════════════════════════════════════════════
+
+FAZER LOGIN NO PAINEL
+═══════════════════════════════════════════════════════════════
+
+1. Abra: c:\Users\vande\OneDrive\Documents\easy cheats api\easy cheats api\public\painel.html
+
+2. Preencha:
+   - URL da API: https://easycheats-api.onrender.com
+   - Senha: EasyCheats@2024
+
+3. Clique em "Entrar"
+
+✅ PRONTO!
+
+═══════════════════════════════════════════════════════════════

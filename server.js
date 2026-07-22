@@ -13,20 +13,8 @@ const PORT = process.env.PORT || 3000;
 console.log('Porta configurada:', PORT);
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'EASYCHEATS@2024';
 
-// Usa /data se disponível (Square Cloud com volume), senão usa __dirname
-const DATA_DIR = (() => {
-  try {
-    if (!fs.existsSync('/data')) fs.mkdirSync('/data', { recursive: true });
-    // Testa se consegue escrever
-    fs.writeFileSync('/data/.test', '1');
-    fs.unlinkSync('/data/.test');
-    console.log('Usando /data para persistência.');
-    return '/data';
-  } catch (e) {
-    console.warn('Aviso: /data indisponível, usando __dirname:', e.message);
-    return __dirname;
-  }
-})();
+// Diretório de dados para Render
+const DATA_DIR = __dirname;
 
 const DB_FILE        = path.join(DATA_DIR, 'db.json');
 const DB_BACKUP_FILE = path.join(DATA_DIR, 'db.backup.json');

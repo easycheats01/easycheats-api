@@ -1,5 +1,20 @@
+# Dependências
 node_modules/
+
+# Arquivos de dados
 keys.db
 db.json
 db.backup.json
+
+# Variáveis de ambiente
 .env
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
